@@ -7,7 +7,7 @@ function Dashboard() {
   const socket = useRef(null);
 
   useEffect(() => {
-    socket.current = io("http://localhost:8000");
+    socket.current = io("https://my-chatroom-backend.onrender.com");
 
     socket.current.on("connect", () => {
       console.log("Connected to server");
