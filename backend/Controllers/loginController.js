@@ -10,3 +10,10 @@ export const loginController=async(req,res)=>{
     await newuser.save();
     res.send("success");
 }
+
+export const logout = async (req, res) => {
+    const { name } = req.body;
+    await Users.findOneAndUpdate({ name }, { isOnline: false });
+    res.sendStatus(200);
+}
+// export default {logout,loginController};

@@ -1,16 +1,38 @@
 import express from "express";
-import dotenv from "dotenv";
-import authRoutes from "./Routes/authRoutes.js";
+import http from "http";
+import { Server } from "socket.io";
 import cors from "cors";
-import mongoose from "mongoose";
-const app=express();
+
+const app = express();
+
 app.use(express.json());
-app.use(cors());
-dotenv.config();
-mongoose.connect(process.env.MONGO_URI)
-.then(()=>{console.log("db connected")})
-.catch(()=>{console.log("error while connecting")});
-app.use("/api/auth",authRoutes);
-app.listen(process.env.PORT || 8000,()=>{
-    console.log("server running");
+
+const server = http.createServer(app);
+
+const io = new Server(server, {
+    cors: {
+      origin: "http://localhost:3000", 
+      methods: ["GET", "POST"]
+    }
+  });
+  
+
+io.on("connection", (socket) => {
+  console.log("User connected:", socket.id);
+
+ 
+  socket.on("sendMessage", ({name,message}) => {
+    console.log("Message received:", message);
+
+   
+    io.emit("receiveMessage",{name, message});
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User disconnected:", socket.id);
+  });
+});
+
+server.listen(8000, () => {
+  console.log("server running on port 8000");
 });
