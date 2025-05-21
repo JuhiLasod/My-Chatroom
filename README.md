@@ -1,0 +1,1 @@
+This website serves as the foundational model for real-time chat applications, enabling seamless user-to-user communication through instant text messaging. It leverages Socket.IO to facilitate high-speed, bidirectional, real-time data transfer between clients and the server.
